@@ -1,0 +1,11 @@
+/.allure/
+/.gradle/
+/.idea/
+/build/
+/out/
+/allure-results/
+/java/
+/logs/
+*.iml
+/openstack/vms/.vagrant/
+/openstack/env/
