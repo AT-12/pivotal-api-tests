@@ -68,8 +68,8 @@ check.dependsOn jacocoTestReport
 
 test {
     useTestNG()
-    exclude 'org/fundacionjala/fc/runner/**'
-    include 'org/fundacionjala/fc/unit/tests/**'
+    exclude 'org/fundacionjala/pivotal/runner/**'
+    include 'org/fundacionjala/pivotal/unit/tests/**'
     testLogging {
         events 'PASSED', 'STARTED', 'FAILED', 'SKIPPED'
     }
