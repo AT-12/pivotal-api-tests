@@ -11,7 +11,7 @@ public class PivotalEnvironmentTest extends TestCase {
      */
     @Test
     public void endPointWithOneParamTest() {
-        PivotalEnvironment piv = new PivotalEnvironment("gradle.properties");
+        PivotalEnvironment piv = PivotalEnvironment.getInstance();
         String actual  = piv.getBaseUrl();
         Assert.assertEquals(actual, "");
     }
