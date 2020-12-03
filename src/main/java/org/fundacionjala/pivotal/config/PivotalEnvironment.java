@@ -13,9 +13,9 @@ public class PivotalEnvironment extends Environment {
     }
 
     /**
-     * get the schemasPath from the file.properties.
+     * get the token from the file.properties.
      *
-     * @return schemasPath value.
+     * @return token value.
      */
     public String getToken() {
         return getEnvProperty("token");
