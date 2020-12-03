@@ -8,7 +8,7 @@ public class PivotalEnvironment extends Environment {
      *
      * @param propertiesPath
      */
-    public PivotalEnvironment(String propertiesPath) {
+    public PivotalEnvironment(final String propertiesPath) {
         super(propertiesPath);
     }
 

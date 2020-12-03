@@ -4,9 +4,6 @@ import junit.framework.TestCase;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PivotalEnvironmentTest extends TestCase {
 
     /**
@@ -16,6 +13,6 @@ public class PivotalEnvironmentTest extends TestCase {
     public void endPointWithOneParamTest() {
         PivotalEnvironment piv = new PivotalEnvironment("gradle.properties");
         String actual  = piv.getBaseUrl();
-        Assert.assertEquals(actual,"");
+        Assert.assertEquals(actual, "");
     }
 }
