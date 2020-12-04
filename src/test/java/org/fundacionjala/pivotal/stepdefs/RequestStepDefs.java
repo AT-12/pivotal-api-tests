@@ -28,39 +28,63 @@ public class RequestStepDefs {
         this.context = contextToSet;
     }
 
+    /**
+     * valid authentication to request.
+     */
     @Given("the user sets valid authentication to request")
     public void theUserSetsValidAuthenticationToRequest() {
         RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
     }
 
+    /**
+     * Post request.
+     * @param endpoint
+     * @param body
+     */
     @When("the user sends a POST request to {string} with the following Json data")
     public void theUserSendsAPOSTRequestToWithTheFollowingJsonData(final String endpoint, final String body) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
         String bodyMapped = Mapper.mapValue(body, context.getData());
         response = RequestManager.post(endpointMapped, bodyMapped);
     }
+
+    /**
+     * Stores workspace id to clean workspace.
+     */
     @And("stores workspace id to clean workspace")
     public void storeTheIdWorkspace() {
-        context.saveData("id",response.getBody().jsonPath().getString("id"));
+        context.saveData("id", response.getBody().jsonPath().getString("id"));
     }
 
+    /**
+     * Verifies status code.
+     * @param expectedStatusCode
+     */
     @Then("verifies response should have the {int} status code")
-    public void verifiesResponseShouldHaveTheStatusCode(int expectedStatusCode) {
+    public void verifiesResponseShouldHaveTheStatusCode(final int expectedStatusCode) {
         Assert.assertEquals(response.statusCode(), expectedStatusCode);
     }
 
+    /**
+     * Validate response body.
+     * @param schemaPath
+     */
     @And("verifies response body should match with {string} JSON schema")
     public void verifiesResponseBodyShouldMatchWithJSONSchema(final String schemaPath) {
         JsonSchemaValidator.validate(response, PivotalEnvironment.getInstance().getSchemasPath() + schemaPath);
     }
 
+    /**
+     * Verifies response contain values.
+     * @param expectedValues
+     */
     @And("verifies response contain the following values")
     public void verifiesResponseContainTheFollowingValues(final Map<String, String> expectedValues) {
         ResponseBodyValidator.validate(response, expectedValues);
     }
 
     /**
-     * delete workspace
+     * Delete workspace.
      * @param endpoint
      */
     @When("the user sends a DELETE request to {string}")
@@ -79,9 +103,14 @@ public class RequestStepDefs {
         response = RequestManager.get(endpointMapped);
     }
 
+    /**
+     * Put request for workspace.
+     * @param endpoint
+     * @param id
+     */
     @When("the user sends a PUT request to {string} with the following Json data")
-    public void sendsAPUTRequestToWithTheFollowingJsonData(final String endpoint,final  String id_workspace) {
+    public void sendsAPUTRequestToWithTheFollowingJsonData(final String endpoint, final String id) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.put(endpointMapped, id_workspace);
+        response = RequestManager.put(endpointMapped, id);
     }
 }

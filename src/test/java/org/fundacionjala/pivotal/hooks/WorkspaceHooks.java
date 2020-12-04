@@ -22,7 +22,9 @@ public class WorkspaceHooks {
         this.context = contextToSet;
     }
 
-
+    /**
+     * create project.
+     */
     @Before(value = "@createProject")
     public void createProject() {
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/projects";
@@ -32,6 +34,9 @@ public class WorkspaceHooks {
         context.saveData("project_id", response.getBody().jsonPath().getString("id"));
     }
 
+    /**
+     * create workspace.
+     */
     @Before(value = "@createWorkspace")
     public void createWorkspace() {
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces";
@@ -42,7 +47,10 @@ public class WorkspaceHooks {
         context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
     }
 
-    @After(value ="@deleteWorkspace")
+    /**
+     * delete workspace.
+     */
+    @After(value = "@deleteWorkspace")
     public void deleteWorkspace() {
         String workspaceId = context.getValueData("id");
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces/" +  workspaceId;
