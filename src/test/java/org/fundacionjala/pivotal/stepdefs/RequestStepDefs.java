@@ -10,7 +10,6 @@ import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.core.utils.Mapper;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
-import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 import org.fundacionjala.pivotal.utils.ResponseBodyValidator;
 import org.testng.Assert;
 
