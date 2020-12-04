@@ -5,7 +5,7 @@ Feature: Update Workspace
   Background: Sets authentication
     Given the user sets valid authentication to request
 
-  @functional
+  @functional @createWorkspace
   Scenario: Verify that is possible to update the workspace information
     When the user sends a PUT request to "/my/workspaces/{workspace_id}" with the following Json data
       """

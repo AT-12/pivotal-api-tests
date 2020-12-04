@@ -19,9 +19,8 @@ public final class ResponseBodyValidator {
 
     /**
      * Validates response body values.
-     *
-     * @param response       response.
-     * @param expectedValues expected values.
+     * @param response       response
+     * @param expectedValues expected values
      */
     public static void validate(final Response response, final Map<String, String> expectedValues) {
         for (Map.Entry<String, String> entry : expectedValues.entrySet()) {

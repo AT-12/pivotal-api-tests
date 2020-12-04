@@ -13,7 +13,7 @@ Feature: Create Workspace
           "name": "my first workspace"
         }
      """
-    And store the id_workspace
+    And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
     And verifies response body should match with "workspace/messageResponse.json" JSON schema
     And verifies response contain the following values
@@ -29,7 +29,7 @@ Feature: Create Workspace
         "name": "%_"
       }
       """
-    And store the id_workspace
+    And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
     And verifies response body should match with "workspace/messageResponse.json" JSON schema
     And verifies response contain the following values

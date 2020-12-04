@@ -17,6 +17,7 @@ public class Context {
 
     /**
      * Saves the requestData of form data in requestData.
+     *
      * @param requestDataToStore
      */
     public void saveRequestData(final Map<String, String> requestDataToStore) {
@@ -25,6 +26,7 @@ public class Context {
 
     /**
      * Gets the value of key given.
+     *
      * @param key
      * @return a String data
      */
@@ -34,6 +36,7 @@ public class Context {
 
     /**
      * Saves the data of form data in data.
+     *
      * @param key
      * @param value
      */
@@ -43,10 +46,29 @@ public class Context {
 
     /**
      * Gets the value of key given.
+     *
      * @param key
      * @return a String data
      */
     public String getValueData(final String key) {
         return this.data.getOrDefault(key, "");
+    }
+
+    /**
+     * Gets data map.
+     *
+     * @return data map
+     */
+    public Map<String, String> getData() {
+        return data;
+    }
+
+    /**
+     * Sets data map.
+     *
+     * @param dataToSet
+     */
+    public void setData(final Map<String, String> dataToSet) {
+        this.data = dataToSet;
     }
 }

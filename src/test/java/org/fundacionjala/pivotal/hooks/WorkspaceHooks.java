@@ -7,6 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.fundacionjala.core.client.RequestManager;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
+import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 
 public class WorkspaceHooks {
     private Context context;
@@ -26,24 +27,26 @@ public class WorkspaceHooks {
     public void createProject() {
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/projects";
         String body = "{\"name\":\"Executioner\"}";
+        RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
         Response response = RequestManager.post(endpoint, body);
         context.saveData("project_id", response.getBody().jsonPath().getString("id"));
     }
 
     @Before(value = "@createWorkspace")
     public void createWorkspace() {
-        String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspace/";
-        String body = "{\"name\":\"my workspace\"}";
+        String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces";
+        String body = "{\"name\":\"my workspace33\"}";
+        RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
         Response response = RequestManager.post(endpoint, body);
+        System.out.println(response.asPrettyString());
         context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
-        AuthenticationUtils.getLoggedReqSpec();
-        RequestManager.post(endpoint, body);
     }
 
-    @After
+    @After(value ="@deleteWorkspace")
     public void deleteWorkspace() {
         String workspaceId = context.getValueData("id");
-        String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspace/" +  workspaceId;
+        String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces/" +  workspaceId;
+        System.out.println(endpoint);
         AuthenticationUtils.getLoggedReqSpec();
         RequestManager.delete(endpoint);
     }

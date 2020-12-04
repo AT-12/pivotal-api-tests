@@ -10,6 +10,7 @@ import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.core.utils.Mapper;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
+import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 import org.fundacionjala.pivotal.utils.ResponseBodyValidator;
 import org.testng.Assert;
 
@@ -19,8 +20,12 @@ public class RequestStepDefs {
     private Response response;
     private Context context;
 
-    public RequestStepDefs(Context context){
-        this.context = context;
+    /**
+     * Constructor of Request Step Definitions.
+     * @param contextToSet Context to set
+     */
+    public RequestStepDefs(final Context contextToSet) {
+        this.context = contextToSet;
     }
 
     @Given("the user sets valid authentication to request")
@@ -30,9 +35,11 @@ public class RequestStepDefs {
 
     @When("the user sends a POST request to {string} with the following Json data")
     public void theUserSendsAPOSTRequestToWithTheFollowingJsonData(final String endpoint, final String body) {
-        response = RequestManager.post(endpoint, body);
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        String bodyMapped = Mapper.mapValue(body, context.getData());
+        response = RequestManager.post(endpointMapped, bodyMapped);
     }
-    @And("store the id_workspace")
+    @And("stores workspace id to clean workspace")
     public void storeTheIdWorkspace() {
         context.saveData("id",response.getBody().jsonPath().getString("id"));
     }
@@ -57,7 +64,7 @@ public class RequestStepDefs {
      * @param endpoint
      */
     @When("the user sends a DELETE request to {string}")
-    public void theUserSendsADELETERequestTo(final String endpoint, int id_workspace) {
+    public void theUserSendsADELETERequestTo(final String endpoint) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
         response = RequestManager.delete(endpointMapped);
     }
