@@ -5,15 +5,15 @@ Feature: Delete Workspace
   Background: Sets authentication
     Given the user sets valid authentication to request
 
-  @functional
+  @functional @createWorkspace
   Scenario: Verify that is possible to delete a workspace
     When the user sends a DELETE request to "/my/workspaces/{workspace_id}"
-    Then verifies response should have the "204" status code
+    Then verifies response should have the 204 status code
 
   @negative
   Scenario: Verify that isn't possible to update a workspace non-existent
     When the user sends a DELETE request to "/my/workspaces/{11111}"
-    Then verifies response should have the "404" status code
+    Then verifies response should have the 404 status code
     And verifies response body should match with "common/errorResponse.json" JSON schema
     And verifies response contain the following values
       | status | 404 |

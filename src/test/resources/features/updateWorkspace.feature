@@ -13,7 +13,7 @@ Feature: Update Workspace
         "project_ids": []
       }
       """
-    Then verifies response should have the "200" status code
+    Then verifies response should have the 200 status code
     And verifies response body should match with "common/messageResponse.json" JSON schema
     And verifies response contain the following values
       | status | 200 |
