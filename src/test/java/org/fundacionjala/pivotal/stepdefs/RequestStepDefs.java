@@ -53,7 +53,7 @@ public class RequestStepDefs {
      */
     @And("stores workspace id to clean workspace")
     public void storeTheIdWorkspace() {
-        context.saveData("id", response.getBody().jsonPath().getString("id"));
+        context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
     }
 
     /**
@@ -106,11 +106,14 @@ public class RequestStepDefs {
     /**
      * Put request for workspace.
      * @param endpoint
-     * @param id
+     * @param body
      */
     @When("the user sends a PUT request to {string} with the following Json data")
-    public void sendsAPUTRequestToWithTheFollowingJsonData(final String endpoint, final String id) {
+    public void sendsAPUTRequestToWithTheFollowingJsonData(final String endpoint, final String body) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.put(endpointMapped, id);
+        System.out.println("request complete");
+        //System.out.println(response = RequestManager.put(endpointMapped, body));
+        response = RequestManager.put(endpointMapped, body);
+        //response = RequestManager.
     }
 }

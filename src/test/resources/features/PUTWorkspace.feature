@@ -5,7 +5,7 @@ Feature: Update Workspace
   Background: Sets authentication
     Given the user sets valid authentication to request
 
-  @functional @createWorkspace
+  @functional @createWorkspace @deleteWorkspace
   Scenario: Verify that is possible to update the workspace information
     When the user sends a PUT request to "/my/workspaces/{workspace_id}" with the following Json data
       """
@@ -14,6 +14,17 @@ Feature: Update Workspace
       }
       """
     Then verifies response should have the 200 status code
-    And verifies response body should match with "common/messageResponse.json" JSON schema
+
+  @negative @createWorkspace @deleteWorkspace
+  Scenario: Verify that is possible to update the workspace information
+    When the user sends a PUT request to "/my/workspaces/{workspace_id}" with the following Json data
+      """
+      {
+        "name": "new workspace"
+      }
+      """
+    Then verifies response should have the 400 status code
+    And verifies response body should match with "workspace/errorResponse.json" JSON schema
     And verifies response contain the following values
-      | status | 200 |
+      | kind  | error |
+      | error | One or more request parameters was missing or invalid.|

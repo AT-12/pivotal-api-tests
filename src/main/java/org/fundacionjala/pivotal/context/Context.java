@@ -1,18 +1,21 @@
 package org.fundacionjala.pivotal.context;
 
+import org.fundacionjala.core.client.RequestManager;
+import org.fundacionjala.pivotal.utils.AuthenticationUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Context {
     private Map<String, String> requestData;
     private Map<String, String> data;
-
     /**
      * Constructor for the Context.
      */
     public Context() {
         this.requestData = new HashMap<>();
         this.data = new HashMap<>();
+        RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
     }
 
     /**

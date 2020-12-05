@@ -36,7 +36,7 @@ Feature: Create Workspace
       | kind        | workspace          |
       | name        | %_                 |
 
-  @functional @createProject @deleteWorkspace
+  @functional @createProject @deleteWorkspace @deleteProject
   Scenario: Verify that is possible to create a workspace with project ids
     When the user sends a POST request to "/my/workspaces" with the following Json data
       """
@@ -45,6 +45,7 @@ Feature: Create Workspace
         "project_ids":[{project_id}]
       }
       """
+    And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
     And verifies response body should match with "workspace/messageResponse.json" JSON schema
     And verifies response contain the following values

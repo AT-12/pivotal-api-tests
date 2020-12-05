@@ -9,6 +9,8 @@ import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 
+import java.util.Date;
+
 public class WorkspaceHooks {
     private Context context;
     private static final String TOKEN_HEADER = "X-TrackerToken";
@@ -40,10 +42,9 @@ public class WorkspaceHooks {
     @Before(value = "@createWorkspace")
     public void createWorkspace() {
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces";
-        String body = "{\"name\":\"my workspace33\"}";
-        RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
+        String name = "workspace".concat(Long.toString(new Date().getTime()));
+        String body = "{\"name\":\"" + name + "\"}";
         Response response = RequestManager.post(endpoint, body);
-        System.out.println(response.asPrettyString());
         context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
     }
 
@@ -52,10 +53,8 @@ public class WorkspaceHooks {
      */
     @After(value = "@deleteWorkspace")
     public void deleteWorkspace() {
-        String workspaceId = context.getValueData("id");
+        String workspaceId = context.getValueData("workspace_id");
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces/" +  workspaceId;
-        System.out.println(endpoint);
-        AuthenticationUtils.getLoggedReqSpec();
         RequestManager.delete(endpoint);
     }
 }
