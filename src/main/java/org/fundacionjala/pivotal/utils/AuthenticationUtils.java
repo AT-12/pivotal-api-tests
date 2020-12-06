@@ -1,5 +1,4 @@
 package org.fundacionjala.pivotal.utils;
-
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -28,10 +27,10 @@ public final class AuthenticationUtils {
     public static RequestSpecification getLoggedReqSpec() {
         RestAssured.baseURI = BASE_URL_API;
         requestSpecification = new RequestSpecBuilder()
-            .setRelaxedHTTPSValidation()
-            .addHeader(TOKEN_HEADER, PivotalEnvironment.getInstance().getToken())
-            .addHeader("Content-Type", "application/json")
-            .build();
+                                .setRelaxedHTTPSValidation()
+                                .addHeader(TOKEN_HEADER, PivotalEnvironment.getInstance().getToken())
+                                .addHeader("Content-Type", "application/json")
+                                .build();
         return requestSpecification;
     }
 
