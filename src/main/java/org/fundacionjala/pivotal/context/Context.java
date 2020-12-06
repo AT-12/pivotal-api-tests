@@ -1,57 +1,56 @@
 package org.fundacionjala.pivotal.context;
 
-import java.util.HashMap;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.fundacionjala.core.client.RequestManager;
+import org.fundacionjala.pivotal.utils.AuthenticationUtils;
+
+import java.io.IOException;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Collection;
 
 public class Context {
-    private Map<String, String> requestData;
     private Map<String, String> data;
+    private Map<String, Map<String, String>> mapData;
+    private ObjectMapper map;
 
     /**
      * Constructor for the Context.
      */
     public Context() {
-        this.requestData = new HashMap<>();
+        RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
         this.data = new HashMap<>();
-    }
+        this.mapData = new HashMap<>();
+        this.map = new ObjectMapper();
 
-    /**
-     * Saves the requestData of form data in requestData.
-     *
-     * @param requestDataToStore
-     */
-    public void saveRequestData(final Map<String, String> requestDataToStore) {
-        this.requestData = requestDataToStore;
-    }
-
-    /**
-     * Gets the value of key given.
-     *
-     * @param key
-     * @return a String data
-     */
-    public String getRequestValue(final String key) {
-        return this.requestData.getOrDefault(key, "");
     }
 
     /**
      * Saves the data of form data in data.
      *
-     * @param key
-     * @param value
+     * @param inputJson
      */
-    public void saveData(final String key, final String value) {
-        this.data.put(key, value);
+    public void saveData(final String inputJson) throws JsonParseException, JsonMappingException, IOException {
+        mapData = map.readValue(inputJson, Map.class);
+        toMap(mapData);
     }
 
     /**
      * Gets the value of key given.
      *
-     * @param key
-     * @return a String data
+     * @param key to get value
+     * @return value of key
      */
     public String getValueData(final String key) {
-        return this.data.getOrDefault(key, "");
+        String value = "";
+        if (mapData.containsKey(key)) {
+            value = String.format("%s", mapData.get(key));
+        }
+        return value;
     }
 
     /**
@@ -64,9 +63,29 @@ public class Context {
     }
 
     /**
+     * Converts Map of Maps into Map.
+     *
+     * @param mapToConvert map
+     */
+    private void toMap(final Map<String, Map<String, String>> mapToConvert) {
+        Map<String, String> mapAux = new HashMap<String, String>();
+        Set<String> keySet = mapToConvert.keySet();
+        Iterator<String> iterator = keySet.iterator();
+        Collection<Map<String, String>> mapCollection = mapToConvert.values();
+        int i = 0;
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            String value = String.format("%s", mapCollection.toArray()[i]);
+            mapAux.put(key, value);
+            i++;
+        }
+        data = mapAux;
+    }
+
+    /**
      * Sets data map.
      *
-     * @param dataToSet
+     * @param dataToSet map
      */
     public void setData(final Map<String, String> dataToSet) {
         this.data = dataToSet;
