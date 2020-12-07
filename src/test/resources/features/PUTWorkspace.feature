@@ -7,7 +7,7 @@ Feature: Update Workspace
 
   @functional @createWorkspace @deleteWorkspace
   Scenario: Verify that is possible to update the workspace information
-    When the user sends a PUT request to "/my/workspaces/{workspace_id}" with the following Json data
+    When the user sends a PUT request to "/my/workspaces/{id}" with the following Json data
       """
       {
         "project_ids": []
@@ -17,7 +17,7 @@ Feature: Update Workspace
 
   @negative @createWorkspace @deleteWorkspace
   Scenario: Verify that is possible to update the workspace information
-    When the user sends a PUT request to "/my/workspaces/{workspace_id}" with the following Json data
+    When the user sends a PUT request to "/my/workspaces/{id}" with the following Json data
       """
       {
         "name": "new workspace"

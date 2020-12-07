@@ -7,7 +7,7 @@ Feature: Delete Workspace
 
   @functional @createWorkspace
   Scenario: Verify that is possible to delete a workspace
-    When the user sends a DELETE request to "/my/workspaces/{workspace_id}"
+    When the user sends a DELETE request to "/my/workspaces/{id}"
     Then verifies response should have the 204 status code
 
   @negative

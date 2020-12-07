@@ -1,8 +1,10 @@
 package org.fundacionjala.pivotal.utils;
 
 import io.restassured.response.Response;
+import org.fundacionjala.core.utils.Mapper;
 import org.testng.Assert;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,5 +30,23 @@ public final class ResponseBodyValidator {
             String expectedValue = entry.getValue();
             Assert.assertEquals(actualValue, expectedValue);
         }
+    }
+
+    /**
+     * Validates response body values.
+     *
+     * @param response Response
+     * @param context Context
+     * @param mapExpected Map
+     */
+    public static void validateBody(final Response response, final Map<String, String> context,
+                                    final Map<String, String> mapExpected) {
+        Map<String, String> expectedValues = new HashMap<>();
+        for (Map.Entry<String, String> data : mapExpected.entrySet()) {
+            String key = data.getKey();
+            String value = Mapper.mapValue(data.getValue(), context);
+            expectedValues.put(key, value);
+        }
+        validate(response, expectedValues);
     }
 }

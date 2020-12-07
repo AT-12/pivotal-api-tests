@@ -36,13 +36,13 @@ Feature: Create Workspace
       | kind        | workspace          |
       | name        | %_                 |
 
-  @functional @createProject @deleteWorkspace @deleteProject
+  @functional @createProject @deleteProject @deleteWorkspace
   Scenario: Verify that is possible to create a workspace with project ids
     When the user sends a POST request to "/my/workspaces" with the following Json data
       """
       {
         "name": "my second workspace",
-        "project_ids":[{project_id}]
+        "project_ids":[{id}]
       }
       """
     And stores workspace id to clean workspace

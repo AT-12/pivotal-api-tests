@@ -14,6 +14,7 @@ import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 import org.fundacionjala.pivotal.utils.ResponseBodyValidator;
 import org.testng.Assert;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class RequestStepDefs {
@@ -52,8 +53,9 @@ public class RequestStepDefs {
      * Stores workspace id to clean workspace.
      */
     @And("stores workspace id to clean workspace")
-    public void storeTheIdWorkspace() {
-        context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
+    public void storeTheIdWorkspace() throws IOException {
+        //context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
+        context.saveData(response.asString());
     }
 
     /**
@@ -111,9 +113,6 @@ public class RequestStepDefs {
     @When("the user sends a PUT request to {string} with the following Json data")
     public void sendsAPUTRequestToWithTheFollowingJsonData(final String endpoint, final String body) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        System.out.println("request complete");
-        //System.out.println(response = RequestManager.put(endpointMapped, body));
         response = RequestManager.put(endpointMapped, body);
-        //response = RequestManager.
     }
 }

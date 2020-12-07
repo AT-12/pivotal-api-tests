@@ -14,5 +14,5 @@ Feature: GET Workspace
 
   @functional @createWorkspace @deleteWorkspace
   Scenario: Verify that is possible to retrieve a workspace
-    When the user sends a GET request to "/my/workspaces/{workspace_id}"
+    When the user sends a GET request to "/my/workspaces/{id}"
     Then verifies response should have the 200 status code
