@@ -7,7 +7,6 @@ import io.restassured.specification.RequestSpecification;
 import org.fundacionjala.core.client.RequestManager;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
-import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 
 import java.io.IOException;
 import java.util.Date;
