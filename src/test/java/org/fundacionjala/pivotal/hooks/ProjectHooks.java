@@ -7,7 +7,9 @@ import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 
-import java.util.Date;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProjectHooks {
 
@@ -25,13 +27,22 @@ public class ProjectHooks {
      * Creates project.
      */
     @Before(value = "@createProject", order = 0)
-    public void createProject() {
+    public void createProject() throws IOException {
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/projects";
-        String name = "at-12".concat(Long.toString(new Date().getTime()));
+        String name = "at-12";
         String body = "{\"name\":\" " + name + "\"}";
         Response response = RequestManager.post(endpoint, body);
-        context.saveData("project_id", response.getBody().jsonPath().getString("id"));
-        context.saveData("name", name);
+        context.saveData(response.asString().replace("id", "project_id"));
+    }
+
+    /**
+     * Creates an invalid id.
+     */
+    @Before(value = "@setInvalidProject", order = 0)
+    public void setInvalidProject() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("project_id", "2478593");
+        context.setData(map);
     }
 
     /**
