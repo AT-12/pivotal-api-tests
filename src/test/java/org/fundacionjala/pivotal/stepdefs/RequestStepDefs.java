@@ -6,11 +6,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.fundacionjala.core.client.RequestManager;
+import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.core.utils.Mapper;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
-import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.pivotal.utils.ResponseBodyValidator;
 import org.testng.Assert;
 
@@ -74,7 +74,8 @@ public class RequestStepDefs {
     @And("sends a POST request to {string} with the following Json data")
     public void sendsPOSTRequest(final String endpoint, final String body) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.post(endpointMapped, body);
+        String bodyMapped = Mapper.mapValue(body, context.getData());
+        response = RequestManager.post(endpointMapped, bodyMapped);
     }
 
     /**
@@ -114,9 +115,8 @@ public class RequestStepDefs {
     }
 
     /**
-     * Verifies response status code.
-     *
-     * @param expectedStatusCode expected status code
+     * Verifies status code.
+     * @param expectedStatusCode
      */
     @Then("verifies response should have the {int} status code")
     public void verifiesStatusCode(final int expectedStatusCode) {
@@ -131,29 +131,6 @@ public class RequestStepDefs {
     @And("verifies response body should match with {string} JSON schema")
     public void verifiesResponseBodyJSONSchema(final String schemaPath) {
         JsonSchemaValidator.validate(response, PivotalEnvironment.getInstance().getSchemasPath() + schemaPath);
-    }
-
-    /**
-     * Verifies response values.
-     *
-     * @param expectedValues expected response values
-     */
-    @And("verifies response should contain the following values")
-    public void verifiesResponseValues(final Map<String, String> expectedValues) {
-        ResponseBodyValidator.validate(response, expectedValues);
-    }
-
-    /**
-     * Verifies response values with body parameters.
-     *
-     * @param key String
-     * @param expectValues expected Map of response values
-     */
-    @And("verifies the {string} response should contain the following values")
-    public void verifiesResponseBodyValues(final String key, final Map<String, String> expectValues)
-                                            throws IOException {
-        context.saveData(response.asString());
-        ResponseBodyValidator.validateBody(response, context.getData(), expectValues);
     }
 
     /**
@@ -199,5 +176,44 @@ public class RequestStepDefs {
     @Given ("the user sets the following json body")
     public void variableWithoutTable(final String docString) {
         valuesMapped = docString;
+    }
+
+    /**
+     * Verifies response values.
+     *
+     * @param expectedValues expected response values
+     */
+    @And("verifies response should contain the following values")
+    public void verifiesResponseValues(final Map<String, String> expectedValues) {
+        ResponseBodyValidator.validate(response, expectedValues);
+    }
+
+    /**
+     * Verifies response body values.
+     *
+     * @param expectedValues expected response values
+     */
+    @And("verifies response contain the following values")
+    public void verifiesResponseBody(final Map<String, String> expectedValues) throws IOException {
+        ResponseBodyValidator.validateBody(response, context.getData(), expectedValues);
+    }
+
+    /**
+     * Verifies response body values.
+     *
+     * @param expectedValues expected response values
+     */
+    @And("verifies the response contain the following values")
+    public void verifiesResponseBodyValues(final Map<String, String> expectedValues) throws IOException {
+        context.saveData(response.asString());
+        ResponseBodyValidator.validateBody(response, context.getData(), expectedValues);
+    }
+
+    /**
+     * Stores workspace id to clean workspace.
+     */
+    @And("stores workspace id to clean workspace")
+    public void storeTheIdWorkspace() throws IOException {
+        context.saveData(response.asString());
     }
 }

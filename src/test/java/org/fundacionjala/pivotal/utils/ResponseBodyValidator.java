@@ -21,7 +21,6 @@ public final class ResponseBodyValidator {
 
     /**
      * Validates response body values.
-     *
      * @param response       response
      * @param expectedValues expected values
      */

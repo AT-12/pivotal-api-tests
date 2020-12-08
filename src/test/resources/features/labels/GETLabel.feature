@@ -10,7 +10,7 @@ Feature: GET Labels of a Project
     When the user sends a GET request to "/projects/{project_id}/labels"
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/messageResponse.json" JSON schema
-    And verifies the "project" response should contain the following values
+    And verifies the response contain the following values
       | [0].kind | label  |
       | [0].name | {name} |
 
@@ -19,7 +19,7 @@ Feature: GET Labels of a Project
     When the user sends a GET request to "/projects/{project_id}/labels"
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/messageLabelsResponse.json" JSON schema
-    And verifies the "project" response should contain the following values
+    And verifies the response contain the following values
       | [0].kind       | label        |
       | [0].id         | {id0}        |
       | [0].project_id | {project_id} |
@@ -31,7 +31,7 @@ Feature: GET Labels of a Project
     When the user sends a GET request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/createLabelResponse.json" JSON schema
-    And verifies the "label" response should contain the following values
+    And verifies the response contain the following values
       | kind | label  |
       | id   | {id}   |
       | name | {name} |
@@ -42,7 +42,7 @@ Feature: GET Labels of a Project
     And sends a GET request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 404 status code
     And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
-    And verifies the "label" response should contain the following values
+    And verifies the response contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
       | error | The object you tried to access could not be found.  It may have been removed by another user, you may be using the ID of another object type, or you may be trying to access a sub-resource at the wrong point in a tree. |

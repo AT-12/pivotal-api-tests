@@ -17,7 +17,7 @@ Feature: POST Labels to a Project
     And stores the project id to compare it with returned in body response
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/createLabelResponse.json" JSON schema
-    And verifies the "project" response should contain the following values
+    And verifies the response contain the following values
       | kind       | label        |
       | project_id | {project_id} |
 
@@ -85,7 +85,7 @@ Feature: POST Labels to a Project
       """
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/createLabelResponse.json" JSON schema
-    And verifies the "label" response should contain the following values
+    And verifies the response contain the following values
       | kind       | label        |
       | id         | {id}         |
       | project_id | {project_id} |

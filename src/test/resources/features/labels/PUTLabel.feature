@@ -16,7 +16,7 @@ Feature: GET Labels of a Project
     When sends a PUT request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 200 status code
     And verifies response body should match with "labels/createLabelResponse.json" JSON schema
-    And verifies the "label" response should contain the following values
+    And verifies the response contain the following values
       | kind       | label        |
       | id         | {id}         |
       | project_id | {project_id} |
