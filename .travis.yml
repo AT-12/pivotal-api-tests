@@ -12,3 +12,4 @@ addons:
 script:
   - ./gradlew check
   - sonar-scanner
+  - ./gradlew executeBDDTests -Ptoken=$PIVOTAL_TOKEN
