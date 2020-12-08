@@ -16,15 +16,4 @@ public class PivotalEnvironmentTest extends TestCase {
         String expected = "https://www.pivotaltracker.com/services/v5";
         Assert.assertEquals(actual, expected);
     }
-
-    /**
-     * Test get Token value from gradle.properties.
-     */
-    @Test
-    public void getTokenTest() {
-        PivotalEnvironment piv = PivotalEnvironment.getInstance();
-        String actual  = piv.getToken();
-        String expected = "";
-        Assert.assertEquals(actual, expected);
-    }
 }

@@ -14,7 +14,7 @@ Feature: GET Labels of a Project
       | [0].kind | label  |
       | [0].name | {name} |
 
-  @functional @createProject @createLabels @deleteProject
+  @functional @smokeTest @createProject @createLabels @deleteProject
   Scenario: Verify all project's labels are returned
     When the user sends a GET request to "/projects/{project_id}/labels"
     Then verifies response should have the 200 status code
