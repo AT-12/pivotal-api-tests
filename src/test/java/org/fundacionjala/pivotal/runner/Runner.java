@@ -2,6 +2,7 @@ package org.fundacionjala.pivotal.runner;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
@@ -25,7 +26,7 @@ public final class Runner extends AbstractTestNGCucumberTests {
      */
     @BeforeTest
     public void beforeAllScenarios() {
-        System.setProperty("dataproviderthreadcount", "1");
+        System.setProperty("dataproviderthreadcount", PivotalEnvironment.getInstance().getCucumberThreadCount());
     }
 }
 
