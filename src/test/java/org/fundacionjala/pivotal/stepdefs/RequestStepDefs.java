@@ -22,6 +22,8 @@ public class RequestStepDefs {
     private Response response;
     private Context context;
     private String jsonData = "";
+    private String projectId = "";
+
     /**
      * Constructor of Request Step Definitions.
      *
@@ -34,7 +36,7 @@ public class RequestStepDefs {
     /**
      * Sets valid authentication headers.
      */
-    @Given("The user sets valid authentication to request")
+    @Given("the user sets valid authentication to request")
     public void setsValidAuthentication() {
         RequestManager.setRequestSpec(AuthenticationUtils.getLoggedReqSpec());
     }
@@ -45,15 +47,106 @@ public class RequestStepDefs {
      * @param endpoint resource endpoint
      */
     @When("the user sends a GET request to {string}")
+    @When("the user sends an invalid endpoint to GET request to {string}")
+    @When("the user sends an invalid id to GET request to {string}")
+    @When("the user sends a GET request to {string} with the following Json data")
+    @And("sends a GET request to {string}")
     public void sendsGETRequest(final String endpoint) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
         response = RequestManager.get(endpointMapped);
     }
 
     /**
-     * Verifies response status code.
+     * Stores values given in Json data.
      *
-     * @param expectedStatusCode expected status code
+     * @param jsonDataParameter String json
+     * @throws IOException
+     */
+    @Given("the following values in the Json data")
+    public void theFollowingValuesInTheJsonData(final String jsonDataParameter) {
+        jsonData = jsonDataParameter;
+    }
+
+    /**
+     * Sends a POST request.
+     *
+     * @param endpoint resource endpoint
+     * @throws IOException
+     */
+    @When("the user sends POST request to {string}")
+    public void theUserSendsAPOSTRequestTo(final String endpoint) throws IOException {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.post(endpoint, jsonData);
+        context.saveData(response.asString().replace("id", "project_id"));
+    }
+
+    /**
+     * Sends a POST request.
+     *
+     * @param endpoint resource endpoint
+     */
+    @When("the user sends a POST request to {string}")
+    public void sendsPOSTRequest(final String endpoint) {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.post(endpointMapped, jsonData);
+    }
+
+    /**
+     * Sends a POST request with body.
+     *
+     * @param endpoint resource endpoint
+     * @param body json data
+     */
+    @When("the user sends a POST request to {string} with the following Json data")
+    @And("sends a POST request to {string} with the following Json data")
+    public void sendsPOSTRequest(final String endpoint, final String body) {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        String bodyMapped = Mapper.mapValue(body, context.getData());
+        response = RequestManager.post(endpointMapped, bodyMapped);
+    }
+
+    /**
+     * Sends a PUT request.
+     *
+     * @param endpoint resource endpoint
+     */
+    @When("sends a PUT request to {string}")
+    @When("the user sends PUT request to {string}")
+    public void sendsPUTRequest(final String endpoint) {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.put(endpointMapped, jsonData);
+    }
+
+    /**
+     * Sends a PUT request with body.
+     *
+     * @param endpoint resource endpoint
+     * @param body json data
+     */
+    @When("the user sends a PUT request to {string} with the following Json data")
+    @When("the user sends a PUT request to {string}")
+    @And("sends a PUT request to {string} with the following Json data")
+    public void sendsPUTRequest(final String endpoint, final String body) {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.put(endpointMapped, body);
+    }
+
+    /**
+     * Sends a DELETE request.
+     *
+     * @param endpoint resource endpoint
+     */
+    @When("the user sends a DELETE request to {string}")
+    @When("sends a DELETE request to {string}")
+    public void sendsDELETERequest(final String endpoint) {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.delete(endpointMapped);
+    }
+
+    /**
+     * Verifies status code.
+     *
+     * @param expectedStatusCode Int status code
      */
     @Then("verifies response should have the {int} status code")
     public void verifiesStatusCode(final int expectedStatusCode) {
@@ -61,13 +154,58 @@ public class RequestStepDefs {
     }
 
     /**
-     * Verifies response body json schema.
+     * Verifies response body with json schema.
      *
      * @param schemaPath schema path
      */
     @And("verifies response body should match with {string} JSON schema")
-    public void verifiesResponseBodyMatchWithJSONSchema(final String schemaPath) {
+    public void verifiesResponseBodyJSONSchema(final String schemaPath) {
         JsonSchemaValidator.validate(response, PivotalEnvironment.getInstance().getSchemasPath() + schemaPath);
+    }
+
+    /**
+     * Stores a value in project id.
+     *
+     * @param type String
+     * @throws IOException
+     */
+    @When("the user stores an invalid value as {string} in workspace")
+    public void storesInvalidIdInWorkspace(final String type) throws IOException {
+        if ("label id".equals(type)) {
+            context.getData().replace("id", "9999999999999");
+        } else if (("project id".equals(type)) && (context.getData().size() != 0)) {
+            context.getData().replace("project_id", "9999999999999");
+        } else {
+            context.saveData("{\"id\":\"999999999999\"}");
+        }
+    }
+
+    /**
+     * Stores the project id of response.
+     */
+    @And("stores the project id to compare it with returned in body response")
+    public void storesProjectId() {
+        projectId = context.getValueData("id");
+    }
+
+    /**
+     * Creates the table.
+     *
+     * @param valuesToMatch Map of values
+     */
+    @And("creates the table for next step")
+    public void createsTable(final Map<String, String> valuesToMatch) {
+        jsonData = Mapper.mapValue(projectId, valuesToMatch);
+    }
+
+    /**
+     * Maps the variable for scenario outline.
+     *
+     * @param docString String of table
+     */
+    @Given ("the user sets the following json body")
+    public void variableWithoutTable(final String docString) {
+        jsonData = docString;
     }
 
     /**
@@ -77,91 +215,36 @@ public class RequestStepDefs {
      */
     @And("verifies response should contain the following values")
     public void verifiesResponseValues(final Map<String, String> expectedValues) {
+        ResponseBodyValidator.validate(response, expectedValues);
+    }
+
+    /**
+     * Verifies response body values.
+     *
+     * @param expectedValues expected response values
+     */
+    @And("verifies response contain the following values")
+    public void verifiesResponseBody(final Map<String, String> expectedValues) throws IOException {
         ResponseBodyValidator.validateBody(response, context.getData(), expectedValues);
     }
 
     /**
+     * Verifies response body values.
      *
-     * @param endpoint
-     * @param body
+     * @param expectedValues expected response values
      */
-    @When("the user sends a POST request to {string} with the following Json data")
-    public void sendsPOSTRequest(final String endpoint, final String body) {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.post(endpointMapped, body);
+    @And("verifies the response contain the following values")
+    public void verifiesResponseBodyValues(final Map<String, String> expectedValues) throws IOException {
+        context.saveData(response.asString());
+        ResponseBodyValidator.validateBody(response, context.getData(), expectedValues);
     }
 
     /**
-     *
-     * @param endpoint
+     * Stores workspace id to clean workspace.
      */
-    @When("the user sends a GET request to {string} with the following Json data")
-    public void theUserSendsAGETRequestToWithTheFollowingJsonData(final String endpoint) {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.get(endpointMapped);
+    @And("stores workspace id to clean workspace")
+    public void storeTheIdWorkspace() throws IOException {
+        context.saveData(response.asString());
     }
 
-    /**
-     *
-     * @param endpoint
-     */
-    @When("the user sends an invalid id to GET request to {string}")
-    public void theUserSendsAnInvalidIdToGETRequestTo(final String endpoint) {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.get(endpointMapped);
-    }
-
-    /**
-     *
-     * @param endpoint
-     */
-    @When("the user sends an invalid endpoint to GET request to {string}")
-    public void theUserSendsAnInvalidEndpointToGETRequestTo(final String endpoint) {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.get(endpointMapped);
-    }
-
-    /**
-     *
-     * @param endpoint
-     */
-    @When("the user sends a DELETE request to {string}")
-    public void theUserSendsADELETERequestTo(final String endpoint) {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.delete(endpointMapped);
-    }
-
-    /**
-     *
-     * @param jsonDataParameter
-     * @throws IOException
-     */
-    @Given("the following values in the Json data")
-    public void theFollowingValuesInTheJsonData(final String jsonDataParameter) {
-        jsonData = jsonDataParameter;
-    }
-
-    /**
-     *
-     * @param endpoint
-     * @throws IOException
-     */
-    @When("the user sends a PUT request to {string}")
-    public void theUserSendsAPUTRequestTo(final String endpoint) throws IOException {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.put(endpointMapped, jsonData);
-       // context.saveData(response.asString().replace("id", "project_id"));
-    }
-
-    /**
-     *
-     * @param endpoint
-     * @throws IOException
-     */
-    @When("the user sends a POST request to {string}")
-    public void theUserSendsAPOSTRequestTo(final String endpoint) throws IOException {
-        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.post(endpoint, jsonData);
-        context.saveData(response.asString().replace("id", "project_id"));
-    }
 }
