@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "code": "unfound_resource",
+      "kind": "error",
+      "error": "The object you tried to access could not be found.  It may have been removed by another user, you may be using the ID of another object type, or you may be trying to access a sub-resource at the wrong point in a tree."
+    }
+  ],
+  "required": [
+    "code",
+    "kind",
+    "error"
+  ],
+  "properties": {
+    "code": {
+      "type": "string",
+      "title": "The code schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "unfound_resource"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "title": "The kind schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "error"
+      ]
+    },
+    "error": {
+      "type": "string",
+      "title": "The error schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "The object you tried to access could not be found.  It may have been removed by another user, you may be using the ID of another object type, or you may be trying to access a sub-resource at the wrong point in a tree."
+      ]
+    }
+  },
+  "additionalProperties": true
+}

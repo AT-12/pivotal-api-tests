@@ -6,8 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.fundacionjala.core.client.RequestManager;
-import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.core.utils.Mapper;
+import org.fundacionjala.core.utils.JsonSchemaValidator;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
@@ -21,8 +21,8 @@ public class RequestStepDefs {
 
     private Response response;
     private Context context;
+    private String jsonData = "";
     private String projectId = "";
-    private String valuesMapped = "";
 
     /**
      * Constructor of Request Step Definitions.
@@ -47,10 +47,37 @@ public class RequestStepDefs {
      * @param endpoint resource endpoint
      */
     @When("the user sends a GET request to {string}")
+    @When("the user sends an invalid endpoint to GET request to {string}")
+    @When("the user sends an invalid id to GET request to {string}")
+    @When("the user sends a GET request to {string} with the following Json data")
     @And("sends a GET request to {string}")
     public void sendsGETRequest(final String endpoint) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
         response = RequestManager.get(endpointMapped);
+    }
+
+    /**
+     * Stores values given in Json data.
+     *
+     * @param jsonDataParameter String json
+     * @throws IOException
+     */
+    @Given("the following values in the Json data")
+    public void theFollowingValuesInTheJsonData(final String jsonDataParameter) {
+        jsonData = jsonDataParameter;
+    }
+
+    /**
+     * Sends a POST request.
+     *
+     * @param endpoint resource endpoint
+     * @throws IOException
+     */
+    @When("the user sends POST request to {string}")
+    public void theUserSendsAPOSTRequestTo(final String endpoint) throws IOException {
+        String endpointMapped = Mapper.mapValue(endpoint, context.getData());
+        response = RequestManager.post(endpoint, jsonData);
+        context.saveData(response.asString().replace("id", "project_id"));
     }
 
     /**
@@ -61,7 +88,7 @@ public class RequestStepDefs {
     @When("the user sends a POST request to {string}")
     public void sendsPOSTRequest(final String endpoint) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.post(endpointMapped, valuesMapped);
+        response = RequestManager.post(endpointMapped, jsonData);
     }
 
     /**
@@ -84,9 +111,10 @@ public class RequestStepDefs {
      * @param endpoint resource endpoint
      */
     @When("sends a PUT request to {string}")
+    @When("the user sends PUT request to {string}")
     public void sendsPUTRequest(final String endpoint) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
-        response = RequestManager.put(endpointMapped, valuesMapped);
+        response = RequestManager.put(endpointMapped, jsonData);
     }
 
     /**
@@ -96,6 +124,7 @@ public class RequestStepDefs {
      * @param body json data
      */
     @When("the user sends a PUT request to {string} with the following Json data")
+    @When("the user sends a PUT request to {string}")
     @And("sends a PUT request to {string} with the following Json data")
     public void sendsPUTRequest(final String endpoint, final String body) {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
@@ -116,7 +145,8 @@ public class RequestStepDefs {
 
     /**
      * Verifies status code.
-     * @param expectedStatusCode
+     *
+     * @param expectedStatusCode Int status code
      */
     @Then("verifies response should have the {int} status code")
     public void verifiesStatusCode(final int expectedStatusCode) {
@@ -165,7 +195,7 @@ public class RequestStepDefs {
      */
     @And("creates the table for next step")
     public void createsTable(final Map<String, String> valuesToMatch) {
-        valuesMapped = Mapper.mapValue(projectId, valuesToMatch);
+        jsonData = Mapper.mapValue(projectId, valuesToMatch);
     }
 
     /**
@@ -175,7 +205,7 @@ public class RequestStepDefs {
      */
     @Given ("the user sets the following json body")
     public void variableWithoutTable(final String docString) {
-        valuesMapped = docString;
+        jsonData = docString;
     }
 
     /**
@@ -216,4 +246,5 @@ public class RequestStepDefs {
     public void storeTheIdWorkspace() throws IOException {
         context.saveData(response.asString());
     }
+
 }
