@@ -150,7 +150,7 @@ public class RequestStepDefs {
     public void theUserSendsAPUTRequestTo(final String endpoint) throws IOException {
         String endpointMapped = Mapper.mapValue(endpoint, context.getData());
         response = RequestManager.put(endpointMapped, jsonData);
-        context.saveData(response.asString().replace("id", "project_id"));
+       // context.saveData(response.asString().replace("id", "project_id"));
     }
 
     /**

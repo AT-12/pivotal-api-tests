@@ -6,9 +6,12 @@ import org.fundacionjala.core.client.RequestManager;
 import org.fundacionjala.pivotal.config.PivotalEnvironment;
 import org.fundacionjala.pivotal.context.Context;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
+import org.testng.mustache.Value;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProjectHooks {
@@ -36,10 +39,29 @@ public class ProjectHooks {
     }
 
     /**
+     * deletes all projects.
+     */
+    @Before(value = "@deleteAllProjects", order = 0)
+    public void deleteAllProjects() throws IOException {
+        String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/projects";
+        Response response = RequestManager.get(endpoint);
+    }
+
+    /**
      * Creates an invalid id.
      */
     @Before(value = "@setInvalidProject", order = 0)
-    public void setInvalidProject() {
+    public void setInvalidIdProject() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("project_id", "9479570");
+        context.setData(map);
+    }
+
+    /**
+     * sets an id from a different account.
+     */
+    @Before(value = "@setAndIdFromADifferentProject", order = 0)
+    public void setAnIdFromADifferentProject() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("project_id", "2478593");
         context.setData(map);
