@@ -12,3 +12,5 @@ addons:
 script:
   - ./gradlew check
   - sonar-scanner
+  - ./gradlew executeBDDTests -Ptoken=$PIVOTAL_TOKEN
+  - ./gradlew runTests -Ptoken=$PIVOTAL_TOKEN -Prpuuid=$RP_UUID -P rplaunch=$RP_LAUNCH -Prpproject=$RP_PROJECT
