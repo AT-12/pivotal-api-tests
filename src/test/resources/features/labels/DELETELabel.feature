@@ -15,7 +15,7 @@ Feature: Labels of Stories
     When the user stores an invalid value as "project id" in workspace
     And sends a DELETE request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 404 status code
-    And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies response should contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
@@ -26,7 +26,7 @@ Feature: Labels of Stories
     When the user stores an invalid value as "label id" in workspace
     And sends a DELETE request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 400 status code
-    And verifies response body should match with "labels/invalidLabelId.json" JSON schema
+    And verifies response body should match with "labels/errorLabelResponse.json" JSON schema
     And verifies response should contain the following values
       | code            | invalid_parameter                                                             |
       | kind            | error                                                                         |

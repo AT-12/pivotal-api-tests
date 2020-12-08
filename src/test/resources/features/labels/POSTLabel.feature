@@ -16,7 +16,7 @@ Feature: POST Labels to a Project
     When the user sends a POST request to "/projects/{id}/labels"
     And stores the project id to compare it with returned in body response
     Then verifies response should have the 200 status code
-    And verifies response body should match with "labels/createLabelResponse.json" JSON schema
+    And verifies response body should match with "labels/messageLabelResponse.json" JSON schema
     And verifies the response contain the following values
       | kind       | label        |
       | project_id | {project_id} |
@@ -36,7 +36,7 @@ Feature: POST Labels to a Project
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "labels/invalidLabel.json" JSON schema
+    And verifies response body should match with "labels/errorLabelNameResponse.json" JSON schema
     And verifies response should contain the following values
       | code                         | invalid_parameter                                      |
       | kind                         | error                                                  |
@@ -54,7 +54,7 @@ Feature: POST Labels to a Project
       }
       """
     Then verifies response should have the 404 status code
-    And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies response should contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
@@ -69,7 +69,7 @@ Feature: POST Labels to a Project
       }
       """
     Then verifies response should have the 500 status code
-    And verifies response body should match with "labels/errorResponseQuotationMarks.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies response should contain the following values
       | code  | unhandled_condition               |
       | kind  | error                             |
@@ -84,7 +84,7 @@ Feature: POST Labels to a Project
       }
       """
     Then verifies response should have the 200 status code
-    And verifies response body should match with "labels/createLabelResponse.json" JSON schema
+    And verifies response body should match with "labels/messageLabelResponse.json" JSON schema
     And verifies the response contain the following values
       | kind       | label        |
       | id         | {id}         |

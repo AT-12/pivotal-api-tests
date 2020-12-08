@@ -15,7 +15,7 @@ Feature: GET Labels of a Project
       """
     When sends a PUT request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 200 status code
-    And verifies response body should match with "labels/createLabelResponse.json" JSON schema
+    And verifies response body should match with "labels/messageLabelResponse.json" JSON schema
     And verifies the response contain the following values
       | kind       | label        |
       | id         | {id}         |
@@ -38,7 +38,7 @@ Feature: GET Labels of a Project
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "labels/invalidLabel.json" JSON schema
+    And verifies response body should match with "labels/errorLabelNameResponse.json" JSON schema
     And verifies response should contain the following values
       | code                         | invalid_parameter                                      |
       | kind                         | error                                                  |
@@ -56,7 +56,7 @@ Feature: GET Labels of a Project
       }
       """
     Then verifies response should have the 404 status code
-    And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies response should contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
@@ -72,7 +72,7 @@ Feature: GET Labels of a Project
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "labels/invalidLabelId.json" JSON schema
+    And verifies response body should match with "labels/errorLabelResponse.json" JSON schema
     And verifies response should contain the following values
       | code            | invalid_parameter                                                             |
       | kind            | error                                                                         |

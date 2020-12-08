@@ -18,7 +18,7 @@ Feature: GET Labels of a Project
   Scenario: Verify all project's labels are returned
     When the user sends a GET request to "/projects/{project_id}/labels"
     Then verifies response should have the 200 status code
-    And verifies response body should match with "labels/messageLabelsResponse.json" JSON schema
+    And verifies response body should match with "labels/messageResponse.json" JSON schema
     And verifies the response contain the following values
       | [0].kind       | label        |
       | [0].id         | {id0}        |
@@ -30,7 +30,7 @@ Feature: GET Labels of a Project
   Scenario: Verify the project's label required is returned
     When the user sends a GET request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 200 status code
-    And verifies response body should match with "labels/createLabelResponse.json" JSON schema
+    And verifies response body should match with "labels/messageLabelResponse.json" JSON schema
     And verifies the response contain the following values
       | kind | label  |
       | id   | {id}   |
@@ -41,7 +41,7 @@ Feature: GET Labels of a Project
     When the user stores an invalid value as "label id" in workspace
     And sends a GET request to "/projects/{project_id}/labels/{id}"
     Then verifies response should have the 404 status code
-    And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies the response contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
@@ -52,7 +52,7 @@ Feature: GET Labels of a Project
     When the user stores an invalid value as "project id" in workspace
     And sends a GET request to "/projects/{id}/labels"
     Then verifies response should have the 404 status code
-    And verifies response body should match with "labels/errorUnfoundResource.json" JSON schema
+    And verifies response body should match with "labels/errorResponse.json" JSON schema
     And verifies response should contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |

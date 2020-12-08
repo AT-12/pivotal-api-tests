@@ -33,9 +33,7 @@ public class WorkspaceHooks {
         String name = "workspace".concat(Long.toString(new Date().getTime()));
         String body = "{\"name\":\"" + name + "\"}";
         Response response = RequestManager.post(endpoint, body);
-       // String workspaceId = context.getValueData("id");
         String workspaceId = response.getBody().jsonPath().getString("id");
-
         String responseToSave = response.asString().split("}")[0] + ",\"workspace_id\":\"" + workspaceId + "\"}";
         context.saveData(responseToSave);
     }
@@ -45,7 +43,7 @@ public class WorkspaceHooks {
      */
     @After(value = "@deleteWorkspace")
     public void deleteWorkspace() {
-        String workspaceId = context.getValueData("id");
+        String workspaceId = context.getValueData("workspace_id");
         String endpoint = PivotalEnvironment.getInstance().getBaseUrl() + "/my/workspaces/" +  workspaceId;
         RequestManager.delete(endpoint);
     }
