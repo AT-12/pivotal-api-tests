@@ -5,7 +5,7 @@ Feature: GET Workspace
   Background: Sets authentication
     Given the user sets valid authentication to request
 
-  @functional @createWorkspace @deleteWorkspace
+  @functional @smokeTest @createWorkspace @deleteWorkspace
   Scenario: Verify that is possible to retrieve all workspaces as list
     When the user sends a GET request to "/my/workspaces"
     Then verifies response should have the 200 status code
