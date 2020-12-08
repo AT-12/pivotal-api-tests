@@ -10,7 +10,7 @@ Feature: Delete Project
     Then  verifies response should have the 204 status code
 
   @negative @setInvalidProject
-  Scenario: Verify if it deletes an existing project
+  Scenario: Verify not project deletion using a project id from a different account
     When the user sends a DELETE request to "/projects/{project_id}"
     Then  verifies response should have the 403 status code
     And verifies response body should match with "projects/projectErrorResponse.json" JSON schema

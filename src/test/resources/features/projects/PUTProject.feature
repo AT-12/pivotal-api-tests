@@ -22,23 +22,23 @@ Feature: Put Project
       | version            | 2               |
       | iteration_length   | 1               |
 
-  @negative @createProject @deleteProject
-  Scenario: Verify if it throws an exception sending an invalid name
-    Given the following values in the Json data
+  #@negative @createProject @deleteProject
+ # Scenario: Verify if it throws an exception sending an invalid name
+ #   Given the following values in the Json data
     """
     {
       "name": ""
     }
     """
-    When the user sends a PUT request to "/projects/{project_id}"
-    Then  verifies response should have the 500 status code
-    And verifies response body should match with "projects/projectInvalidParameterResponse.json" JSON schema
-    And verifies response should contain the following values
-      | code                          | invalid_parameter     |
-      | kind                          | error                 |
-      | general_problem               | Name can't be blank   |
-      | validation_errors[0].field    | name                   |
-      | validation_errors[0].problem  | Name can't be blank    |
+ #   When the user sends a PUT request to "/projects/{project_id}"
+ #   Then  verifies response should have the 500 status code
+ #   And verifies response body should match with "projects/projectInvalidParameterResponse.json" JSON schema
+ #   And verifies response should contain the following values
+ #     | code                          | invalid_parameter     |
+ #     | kind                          | error                 |
+ #     | general_problem               | Name can't be blank   |
+ #     | validation_errors[0].field    | name                   |
+ #     | validation_errors[0].problem  | Name can't be blank    |
 
 
   @negative @setInvalidProject

@@ -17,7 +17,7 @@ Feature: Get Project
       | iteration_length | 1               |
 
   @setInvalidProject
-  Scenario: Verify it throws an exception when sending an invalid id
+  Scenario: Verify not information is returned when invalid project id is provided
     When the user sends an invalid id to GET request to "/projects/{project_id}"
     Then  verifies response should have the 403 status code
     And verifies response body should match with "projects/projectErrorResponse.json" JSON schema
