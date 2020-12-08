@@ -54,7 +54,6 @@ public class RequestStepDefs {
      */
     @And("stores workspace id to clean workspace")
     public void storeTheIdWorkspace() throws IOException {
-        //context.saveData("workspace_id", response.getBody().jsonPath().getString("id"));
         context.saveData(response.asString());
     }
 
