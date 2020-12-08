@@ -106,7 +106,7 @@ Feature: Create Workspace
       | general_problem | 'name' must be an extended_string                      |
 
   @negative
-  Scenario: Verify that isn't possible to create a workspace with with null values
+  Scenario: Verify that isn't possible to create a workspace with null values
     When the user sends a POST request to "/my/workspaces" with the following Json data
       """
       {

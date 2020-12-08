@@ -7,16 +7,19 @@ import org.fundacionjala.core.client.RequestManager;
 import org.fundacionjala.pivotal.utils.AuthenticationUtils;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Collection;
+
 
 public class Context {
     private Map<String, String> data;
     private Map<String, Map<String, String>> mapData;
     private ObjectMapper map;
+    private List<Map> dataAsListMap;
 
     /**
      * Constructor for the Context.
@@ -32,11 +35,26 @@ public class Context {
     /**
      * Saves the data of form data in data.
      *
-     * @param inputJson
+     * @param inputJson String
      */
     public void saveData(final String inputJson) throws JsonParseException, JsonMappingException, IOException {
-        mapData = map.readValue(inputJson, Map.class);
-        toMap(mapData);
+        if (!inputJson.startsWith("[")) {
+            mapData = map.readValue(inputJson, Map.class);
+            toMap(mapData);
+        } else {
+            dataAsListMap = map.readValue(inputJson, List.class);
+            Map<String, String> mapAux = new HashMap<>();
+            int j = 0;
+            for (Map dataList: dataAsListMap) {
+                Object[] arrayKey = dataList.keySet().toArray();
+                Object[] arrayValue = dataList.values().toArray();
+                for (int i = 0; i < arrayKey.length; i++) {
+                    mapAux.put(arrayKey[i].toString() + j + "", arrayValue[i].toString());
+                }
+                data.putAll(mapAux);
+                j++;
+            }
+        }
     }
 
     /**
