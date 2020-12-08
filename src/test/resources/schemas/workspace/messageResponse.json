@@ -3,10 +3,14 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "required": [
+    "id",
     "kind",
     "name"
   ],
   "properties": {
+    "id": {
+      "type": "integer"
+    },
     "kind": {
       "type": "string"
     },

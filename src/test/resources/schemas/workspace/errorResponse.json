@@ -3,14 +3,24 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "required": [
+    "code",
     "kind",
     "error"
   ],
   "properties": {
+    "code": {
+      "type": "string"
+    },
     "kind": {
       "type": "string"
     },
     "error": {
+      "type": "string"
+    },
+    "general_problem": {
+      "type": "string"
+    },
+    "requirement": {
       "type": "string"
     }
   }

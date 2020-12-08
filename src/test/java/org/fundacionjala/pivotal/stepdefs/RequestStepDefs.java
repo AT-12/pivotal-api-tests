@@ -82,7 +82,7 @@ public class RequestStepDefs {
      */
     @And("verifies response contain the following values")
     public void verifiesResponseContainTheFollowingValues(final Map<String, String> expectedValues) {
-        ResponseBodyValidator.validate(response, expectedValues);
+        ResponseBodyValidator.validateBody(response, context.getData(), expectedValues);
     }
 
     /**
