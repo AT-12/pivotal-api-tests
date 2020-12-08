@@ -14,7 +14,7 @@ Feature: Delete Workspace
   Scenario: Verify that isn't possible to delete a workspace non-existent
     When the user sends a DELETE request to "/my/workspaces/1"
     Then verifies response should have the 404 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code  | unfound_resource                                                                                                                                                                                                          |
       | kind  | error                                                                                                                                                                                                                     |
@@ -24,7 +24,7 @@ Feature: Delete Workspace
   Scenario: Verify that isn't possible to delete all workspaces
     When the user sends a DELETE request to "/my/workspaces"
     Then verifies response should have the 404 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code  | route_not_found                               |
       | kind  | error                                         |

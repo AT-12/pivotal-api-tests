@@ -15,7 +15,7 @@ Feature: Create Workspace
      """
     And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
-    And verifies response body should match with "workspace/messageResponse.json" JSON schema
+    And verifies response body should match with "workspaces/messageResponse.json" JSON schema
     And verifies response contain the following values
       | id   | {id}               |
       | kind | workspace          |
@@ -32,7 +32,7 @@ Feature: Create Workspace
       """
     And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
-    And verifies response body should match with "workspace/messageResponse.json" JSON schema
+    And verifies response body should match with "workspaces/messageResponse.json" JSON schema
     And verifies response contain the following values
       | id   | {id}      |
       | kind | workspace |
@@ -49,7 +49,7 @@ Feature: Create Workspace
       """
     And stores workspace id to clean workspace
     Then verifies response should have the 200 status code
-    And verifies response body should match with "workspace/messageResponse.json" JSON schema
+    And verifies response body should match with "workspaces/messageResponse.json" JSON schema
     And verifies response contain the following values
       | id   | {id}                |
       | kind | workspace           |
@@ -65,7 +65,7 @@ Feature: Create Workspace
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code            | invalid_parameter                                                           |
       | kind            | error                                                                       |
@@ -82,7 +82,7 @@ Feature: Create Workspace
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code            | invalid_parameter                                      |
       | kind            | error                                                  |
@@ -98,7 +98,7 @@ Feature: Create Workspace
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code            | invalid_parameter                                      |
       | kind            | error                                                  |
@@ -114,7 +114,7 @@ Feature: Create Workspace
       }
       """
     Then verifies response should have the 400 status code
-    And verifies response body should match with "workspace/errorResponse.json" JSON schema
+    And verifies response body should match with "workspaces/errorResponse.json" JSON schema
     And verifies response contain the following values
       | code            | invalid_parameter                                      |
       | kind            | error                                                  |
